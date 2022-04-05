@@ -1,0 +1,64 @@
+{% extends 'hod_template/base_template.html' %}
+{% block page_title %}
+Staff Apply for Schedule
+{% endblock page_title %}
+{% block main_content %}
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+          <div class="row">
+              <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Staff Apply for Schedule</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+                <div class="table">
+                    <table class="table">
+                        <tr>
+                            <th>ID</th>
+                            <th>Student ID</th>
+                            <th>Student Name</th>
+                            <th>Schedule Date</th>
+                            <th>Schedule Message</th>
+                            <th>Apply On</th>
+                            <th>Action</th>
+                        </tr>
+                        {% for schedule in schedules %}
+                        <tr>
+                            <td>{{ schedule.id }}</td>
+                            <td>{{ schedule.staff_id.admin.id }}</td>
+                            <td>{{ schedule.staff_id.admin.first_name }} {{ schedule.student_id.admin.last_name }}</td>
+                            <td>{{ schedule.schedule_date }}</td>
+                            <td>{{ schedule.schedule_message }}</td>
+                            <td>{{ schedule.created_at }}</td>
+                            <td>
+                                {% if schedule.schedule_status == 0 %}
+                                <a href="{% url 'staff_approve_schedule' schedule_id=schedule.id %}" class="btn btn-success" >Approve</a>
+                                <a class="btn btn-danger" href="{% url 'staff_disapprove_schedule' schedule_id=schedule.id %}" >Disapprove</a>
+                                {% elif schedule.schedule_status == 1  %}
+                                 <button class="btn btn-warning" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Approved</button>
+                                {% else %}
+                                <button class="btn btn-danger" disabled="disabled" data-toggle="modal" data-target="#reply_modal">Disapproved</button>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.card -->
+
+
+
+          </div>
+          </div>
+      </div>
+    </section>
+
+    <!-- /.content -->
+{% endblock main_content %}

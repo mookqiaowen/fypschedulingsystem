@@ -1,0 +1,99 @@
+{% extends 'student_template/base_template.html' %}
+{% block page_title %}
+Schedule Report and Apply for Schedule
+{% endblock page_title %}
+{% load static %}
+{% block main_content %}
+<!-- Main content -->
+<section class="content">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Apply for Schedule</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form action="{% url 'student_apply_schedule_save' %}" method="post">
+                <div class="card-body">
+
+                    <div class="form-group">
+                        <label>Schedule Date</label>
+                        {% csrf_token %}
+                        <input type="date" name="schedule_date" class="form-control" placeholder="Schedule Date">
+                    </div>
+                    <div class="form-group">
+                        <label>Schedule Reason</label>
+                        <textarea class="form-control" rows="6" name="schedule_msg"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        {% if messages %}
+                        <div class="col-12">
+                            {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                            <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
+                            {% endif %}
+                            {% if message.tags == 'success' %}
+                            <div class="alert alert-success" style="margin-top:10px">{{ message }}</div>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-block" id="fetch_student">Apply for Schedule</button>
+                    </div>
+                </form>
+            </div>
+
+
+
+                <!-- /.card -->
+
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Schedule Apply History</h3>
+                </div>
+
+                <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Schedule Date</th>
+                        <th>Schedule Message</th>
+                        <th>Schedule Status</th>
+                    </tr>
+                    {% for row in schedule_data %}
+                        <tr>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.schedule_date }}</td>
+                            <td>{{ row.schedule_message }}</td>
+                            <td>
+                                {% if row.schedule_status == 1 %}
+                                    <span class="alert alert-success">Approved</span>
+                                {% elif row.schedule_status == 2 %}
+                                <span class="alert alert-danger">Rejected</span>
+                                {% else %}
+                                    <span class="alert alert-info">Pending</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- /.content -->
+{% endblock main_content %}
+{% block custom_js %}
+{% endblock custom_js %}

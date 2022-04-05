@@ -1,0 +1,1 @@
+web: gunicorn fyp_scheduling_system.wsgi --log-file
